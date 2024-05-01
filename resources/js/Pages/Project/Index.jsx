@@ -188,7 +188,7 @@ export default function index({auth, projects, queryParams = null}){
                                                 <Link href={route("project.show", project.id)}>
                                                     {project.name}
                                                 </Link>
-                                                </td>
+                                            </td>
 
                                             <td className="px-3 py-2">
                                                 <span className={`px2 py-1 rounded text-white"
@@ -221,7 +221,6 @@ export default function index({auth, projects, queryParams = null}){
                     </div>
                 </div>
             </div>
-
 
         </AuthenticatedLayout>
 

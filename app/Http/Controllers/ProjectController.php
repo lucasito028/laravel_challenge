@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Http\Resources\TaskResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
@@ -83,7 +84,37 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+
+        // Obtém uma instância de query para as tarefas relacionadas ao projeto
+        $query = $project->tasks();
+
+        // Obtém os campos de ordenação da requisição, ou define valores padrão se não fornecidos
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        // Verifica se foi fornecido um parâmetro "name" na requisição e adiciona uma cláusula de filtro à query se sim
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+
+        // Verifica se foi fornecido um parâmetro "status" na requisição e adiciona uma cláusula de filtro à query se sim
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
+
+        // Executa a consulta, ordena os resultados e paginas, limitando a 10 registros por página e exibindo 1 link de paginação em cada lado
+        $tasks = $query->orderBy($sortField, $sortDirection)
+            ->paginate(10)
+            ->onEachSide(1);
+
+        // Retorna a resposta usando Inertia.js, passando dados para a página 'Project/Show'
+        return inertia('Project/Show', [
+            'project' => new ProjectResource($project),    // Converte o projeto para um recurso antes de passá-lo para a view
+            "tasks" => TaskResource::collection($tasks),   // Converte a coleção de tarefas para recursos antes de passá-las para a view
+            'queryParams' => request()->query() ?: null,   // Passa os parâmetros da query da requisição para a view, ou null se não houver parâmetros
+            'success' => session('success'),                // Passa a mensagem de sucesso da sessão para a view
+        ]);
+
     }
 
     /**
