@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\User;
 use App\Http\Resources\TaskResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
@@ -69,6 +70,9 @@ class ProjectController extends Controller
     public function create()
     {
         //
+        return inertia('Project/Create', [
+            'users' => User::all(),
+        ]);
     }
 
     /**

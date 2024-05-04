@@ -17,7 +17,7 @@ export default function index({auth, tasks, queryParams = null}){
           delete queryParams[name];
         }
 
-        router.get(route("project.index"), queryParams);
+        router.get(route("task.index"), queryParams);
 
     }
 
@@ -44,7 +44,7 @@ export default function index({auth, tasks, queryParams = null}){
             queryParams.sort_direction = "asc";
         }
 
-        router.get(route("project.index"), queryParams);
+        router.get(route("task.index"), queryParams);
     };
 
     return(
@@ -89,6 +89,14 @@ export default function index({auth, tasks, queryParams = null}){
                                     </TableHeading>
 
                                     <th className="px-3 py-3">Image</th>
+
+                                    <TableHeading
+                                        name="project_name"
+                                        sort_field={queryParams.sort_field}
+                                        sort_direction={queryParams.sort_direction}
+                                        sortChanged={sortChanged}>
+                                        Project Name
+                                    </TableHeading>
 
                                     <TableHeading
                                         name="name"
@@ -170,6 +178,7 @@ export default function index({auth, tasks, queryParams = null}){
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
+                                        <th className="px-3 py-3"></th>
                                         </tr>
                                 </thead>
                                 <tbody>
@@ -184,7 +193,14 @@ export default function index({auth, tasks, queryParams = null}){
                                             </td>
 
                                             <td className="px-3 py-2">
-                                                {task.name}
+                                                {task.project.name}
+                                            </td>
+
+                                            <td className="px-3 py-2 text-gray-100
+                                            hover:underline">
+                                                <Link href={route("task.show", task.id)}>
+                                                        {task.name}
+                                                </Link>
                                             </td>
 
                                             <td className="px-3 py-2">
