@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
+use Illuminate\Support\Str;
+use illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -17,31 +19,6 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        /*
-        $query = Project::query();
-
-        $sortField = request("sort_field", "created_at");
-
-        $sortDirection= request("sort_direction", "desc");
-
-        if (request()->has("name")) {
-            $query->where("name", "like", "%" . request("name") . "%");
-        }
-
-        if (request()->has("status")) {
-            $query->where("status", request("status"));
-        }
-
-        $projects = $query->orderBy($sortField,
-        $sortDirection)
-        ->paginate(10);
-
-        return inertia("Project/Index", [
-            "projects" => ProjectResource::collection($projects),
-            'queryParams' => request()->query(),
-        ]);
-
-        */
 
         $query = Project::query();
 
@@ -71,7 +48,6 @@ class ProjectController extends Controller
     {
         //
         return inertia('Project/Create', [
-            'users' => User::all(),
         ]);
     }
 
@@ -80,7 +56,21 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        //
+        // Obtém os dados da requisição
+        $data = $request->validated();
+
+        $image = $data['image'] ?? null;
+        $data['created_by'] = Auth::id();
+        $data['updated_by'] = Auth::id();
+
+        if ($image) {
+            $data['image_path'] = $image->store('project/' . Str::random(), 'public');
+        }
+
+        Project::create($data);
+
+        return to_route('project.index')
+        ->with('success', 'Project was created');;
     }
 
     /**
