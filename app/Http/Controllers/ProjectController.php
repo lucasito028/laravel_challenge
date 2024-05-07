@@ -38,6 +38,7 @@ class ProjectController extends Controller
         return inertia("Project/Index", [
             "projects" => ProjectResource::collection($projects),
             'queryParams' => request()->query() ?: null,
+            'success' => session('success')
         ]);
     }
 
@@ -58,7 +59,7 @@ class ProjectController extends Controller
     {
         // Obtém os dados da requisição
         $data = $request->validated();
-
+        /**@var $image UploadedFile */
         $image = $data['image'] ?? null;
         $data['created_by'] = Auth::id();
         $data['updated_by'] = Auth::id();

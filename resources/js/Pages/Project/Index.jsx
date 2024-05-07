@@ -6,7 +6,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import TableHeading from '@/Components/TableHeading';
 
-export default function index({auth, projects, queryParams = null}){
+export default function index({auth, projects, queryParams = null, success}){
 
     queryParams = queryParams || {};
 
