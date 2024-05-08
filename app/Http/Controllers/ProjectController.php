@@ -118,6 +118,9 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         //
+        return inertia('Project/Edit', [
+            'project' => new ProjectResource($project),    // Converte o projeto para um recurso antes de passá-lo para a view
+        ]);
     }
 
     /**
@@ -126,6 +129,21 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         //
+        // Obtém os dados da requisição
+        $data = $request->validated();
+        /**@var $image UploadedFile */
+        $image = $data['image'] ?? null;
+        $data['created_by'] = Auth::id();
+        $data['updated_by'] = Auth::id();
+
+        if ($image) {
+            $data['image_path'] = $image->store('project/' . Str::random(), 'public');
+        }
+
+        Project::create($data);
+
+        return to_route('project.index')
+        ->with('success', 'Project was succed');;
     }
 
     /**

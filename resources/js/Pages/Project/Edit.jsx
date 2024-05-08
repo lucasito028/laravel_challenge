@@ -6,7 +6,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import SelectInput from '@/Components/SelectInput';
 
-export default function create({auth}){
+export default function edit({auth, project}){
 
     const {data,
         setData,
@@ -14,10 +14,10 @@ export default function create({auth}){
         errors,
         reset} = useForm({
         image: "",
-        name: "",
-        status: "",
-        description: "",
-        due_date: "",
+        name: project.name || "",
+        status: project.status || "",
+        description: project.description || "",
+        due_date: project.due_date || "",
     });
 
     const submit = (e) => {
@@ -164,11 +164,11 @@ export default function create({auth}){
                                     >
                                         <option value="">Select Status</option>
                                         <option value="pending">Pending</option>
-                                        <option value="pending">In progress</option>
-                                        <option value="pending">Completed</option>
+                                        <option value="in_progress">In progress</option>
+                                        <option value="completed">Completed</option>
                                     </SelectInput>
 
-                                    <InputError message={errors.due_date} className='mt-2'/>
+                                    <InputError message={errors.status} className='mt-2'/>
 
                                 </div>
 
@@ -198,6 +198,7 @@ export default function create({auth}){
                 </div>
 
             </div>
+
         </AuthenticatedLayout>
     );
 }
