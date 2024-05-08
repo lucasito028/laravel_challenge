@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\User;
+//use App\Models\User;
 use App\Http\Resources\TaskResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;

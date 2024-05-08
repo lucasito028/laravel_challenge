@@ -38,7 +38,8 @@ export default function create({auth}){
                     </h2>
 
                 </div>
-        }>
+            }>
+
             <Head title="Cadastro de Projeto" />
 
             <div className="py-12">
@@ -57,6 +58,7 @@ export default function create({auth}){
 
                                 <div className="mt-4">
 
+                                    {/**
                                     <InputLabel
                                     htmlFor="project_image_path"
                                     value="Project Image"/>
@@ -67,10 +69,24 @@ export default function create({auth}){
                                     name="image"
                                     value={data.image}
                                     className="mt-1 block w-full"
-                                    onChange={(e) => setData("image", e.target.value)}
+                                    onChange={(e) => setData("image", e.target.files[0])}
                                     />
 
                                     <InputError message={errors.image} className='mt-2'/>
+                                    */}
+
+                                    <InputLabel
+                                    htmlFor="project_image_path"
+                                    value="Project Image"
+                                    />
+                                    <TextInput
+                                    id="project_image_path"
+                                    type="file"
+                                    name="image"
+                                    className="mt-1 block w-full"
+                                    onChange={(e) => setData("image", e.target.files[0])}
+                                    />
+                                    <InputError message={errors.image} className="mt-2" />
 
                                 </div>
 
