@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use Illuminate\Support\Str;
 use illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -55,8 +56,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProjectRequest $request)
-    {
+    public function store(StoreProjectRequest $request){
         // Obtém os dados da requisição
         $data = $request->validated();
         /**@var $image UploadedFile */
@@ -77,8 +77,7 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
-    {
+    public function show(Project $project){
 
         // Obtém uma instância de query para as tarefas relacionadas ao projeto
         $query = $project->tasks();
@@ -115,8 +114,7 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
-    {
+    public function edit(Project $project){
         //
         return inertia('Project/Edit', [
             'project' => new ProjectResource($project),    // Converte o projeto para um recurso antes de passá-lo para a view
@@ -126,21 +124,26 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProjectRequest $request, Project $project)
-    {
+    public function update(UpdateProjectRequest $request, Project $project){
         //
         // Obtém os dados da requisição
         $data = $request->validated();
         /**@var $image UploadedFile */
         $image = $data['image'] ?? null;
-        $data['created_by'] = Auth::id();
         $data['updated_by'] = Auth::id();
 
         if ($image) {
-            $data['image_path'] = $image->store('project/' . Str::random(), 'public');
+
+            if($project->image_path){
+                Storage::disk('public')
+                ->deleteDirectory(dirname($project->image_path));
+            }
+
+            $data['image_path'] = $image->store('project/' . Str::random(),
+            'public');
         }
 
-        Project::create($data);
+        $project->update($data);
 
         return to_route('project.index')
         ->with('success', 'Project was succed');;
@@ -152,5 +155,14 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         //
+        $name = $project->name;
+
+        if($project->image_path){
+            Storage::disk('public')
+            ->deleteDirectory(dirname($project->image_path));
+        }
+
+        $project->delete();
+        return to_route('project.index')->with('success', "Project \"$name\" deleted");
     }
 }

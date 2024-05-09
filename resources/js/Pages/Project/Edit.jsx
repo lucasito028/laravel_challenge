@@ -23,7 +23,7 @@ export default function edit({auth, project}){
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("project.store"));
+        post(route("project.update"));
     }
 
     return(

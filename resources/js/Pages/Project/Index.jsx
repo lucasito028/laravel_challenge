@@ -70,6 +70,14 @@ export default function index({auth, projects, queryParams = null, success}){
 
         <Head title="Projects" />
 
+        {success &&
+            (
+            <div className="bg-emerald-500 py-2 px-4 text-white rounded">
+                Projeto Cadastrado
+            </div>
+            )
+        }
+
             <div className="py-12">
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
