@@ -13,7 +13,7 @@ export default function edit({auth, project}){
         post,
         errors,
         reset} = useForm({
-        image: "",
+        image: project.image_path ||"",
         name: project.name || "",
         status: project.status || "",
         description: project.description || "",
@@ -34,13 +34,13 @@ export default function edit({auth, project}){
 
                     <h2 className="font-semibold text-xl text-gray-800
                     dark:text-gray-200 leading-tight">
-                    Cadastrar Projeto
+                    Editar Projeto
                     </h2>
 
                 </div>
             }>
 
-            <Head title="Cadastro de Projeto" />
+            <Head title="Editar Projeto" />
 
             <div className="py-12">
 
@@ -55,6 +55,14 @@ export default function edit({auth, project}){
                             <form
                             onSubmit={submit}
                             className={"p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"}>
+
+                                <div>
+                                    <img
+                                        src={project.image_path}
+                                        alt=""
+                                        className="w-full h-64 object-cover"
+                                    />
+                                </div>
 
                                 <div className="mt-4">
 
@@ -85,6 +93,7 @@ export default function edit({auth, project}){
                                     id="project_image_path"
                                     type="file"
                                     name="image"
+                                    value= {data.image_path}
                                     className="mt-1 block w-full"
                                     onChange={(e) => setData("image", e.target.files[0])}
                                     />
@@ -160,6 +169,7 @@ export default function edit({auth, project}){
                                     id="project_status"
                                     className="mt-1 block w-full"
                                     name="status"
+                                    value={data.status}
                                     onChange={(e) => setData("status", e.target.value)}
                                     >
                                         <option value="">Select Status</option>
@@ -181,10 +191,10 @@ export default function edit({auth, project}){
                                     Voltar
                                     </Link>
 
-                                    <button className="bg-emerald-500 py-1 px-3 text-white
-                                    rounded shadow transition-all hover:bg-emerald-600
+                                    <button className="bg-blue-500 py-1 px-3 text-white
+                                    rounded shadow transition-all hover:bg-blue-600
                                     mr-2 text-sm">
-                                    Cadastrar Projeto
+                                    Editar Projeto
                                     </button>
 
                                 </div>
