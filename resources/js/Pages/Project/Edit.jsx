@@ -12,18 +12,20 @@ export default function edit({auth, project}){
         setData,
         post,
         errors,
-        reset} = useForm({
+        reset} =
+        useForm({
         image: project.image_path ||"",
         name: project.name || "",
         status: project.status || "",
         description: project.description || "",
         due_date: project.due_date || "",
+        _method: 'PUT'
     });
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("project.update"));
+        post(route("project.update", project.id));
     }
 
     return(
@@ -42,6 +44,7 @@ export default function edit({auth, project}){
 
             <Head title="Editar Projeto" />
 
+            <pre>{JSON.stringify(data, undefined, 2)}</pre>
             <div className="py-12">
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -58,7 +61,7 @@ export default function edit({auth, project}){
 
                                 <div>
                                     <img
-                                        src={project.image_path}
+                                        src={data.image}
                                         alt=""
                                         className="w-full h-64 object-cover"
                                     />

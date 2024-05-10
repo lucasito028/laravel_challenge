@@ -25,6 +25,7 @@ export default function Show({ auth, task }) {
         </div>
       }
     >
+    <pre>{JSON.stringfy(task)}</pre>
       <Head title={`Task "${task.name}"`} />
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

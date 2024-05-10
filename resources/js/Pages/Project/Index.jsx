@@ -6,7 +6,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import TableHeading from '@/Components/TableHeading';
 
-export default function index({auth, projects, queryParams = null, success}){
+export default function index({auth, projects, queryParams = null, success, message}){
 
     queryParams = queryParams || {};
 
@@ -47,6 +47,14 @@ export default function index({auth, projects, queryParams = null, success}){
         router.get(route("project.index"), queryParams);
     };
 
+    const deleteProject = (project) =>{
+
+        if(!window.confirm('Você quer deletar esse projeto')){
+            return;
+        }
+        router.delete(route("project.destroy", project.id))
+    }
+
     return(
         <AuthenticatedLayout
         user={auth.user}
@@ -73,7 +81,7 @@ export default function index({auth, projects, queryParams = null, success}){
         {success &&
             (
             <div className="bg-emerald-500 py-2 px-4 text-white rounded">
-                Projeto Cadastrado
+                {success}
             </div>
             )
         }
@@ -227,7 +235,7 @@ export default function index({auth, projects, queryParams = null, success}){
                                                 className="font-medium dark:text-blue-500
                                                 hover:underline mx-1">Editar</Link>
 
-                                                <Link href={route("project.destroy", project.id)}
+                                                <Link onClick={(e) => deleteProject(project)}
                                                 className="font-medium text-red-600 dark:text-red-
                                                 500 hover:underline mx-1">Excluir</Link>
 

@@ -20,6 +20,10 @@ export default function create({auth}){
         due_date: "",
     });
 
+    const handleImageChange = (e) => {
+        setData("image", e.target.files[0]); // Atualiza o estado com o arquivo de imagem selecionado
+    };
+
     const submit = (e) => {
         e.preventDefault();
 
@@ -55,6 +59,14 @@ export default function create({auth}){
                             <form
                             onSubmit={submit}
                             className={"p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"}>
+
+                                <div>
+                                    <img
+                                        src={data.image ? URL.createObjectURL(data.image) : ''}
+                                        alt=""
+                                        className="w-full h-64 object-cover"
+                                    />
+                                </div>
 
                                 <div className="mt-4">
 

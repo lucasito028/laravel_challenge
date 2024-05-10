@@ -146,7 +146,7 @@ class ProjectController extends Controller
         $project->update($data);
 
         return to_route('project.index')
-        ->with('success', 'Project was succed');;
+        ->with('success', 'Projeto foi Alterado com Sucesso');;
     }
 
     /**
@@ -163,6 +163,6 @@ class ProjectController extends Controller
         }
 
         $project->delete();
-        return to_route('project.index')->with('success', "Project \"$name\" deleted");
+        return to_route('project.index')->with('success', "Projeto \"$name\" foi deletado");
     }
 }
