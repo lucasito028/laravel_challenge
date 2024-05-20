@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import {
   PROJECT_STATUS_CLASS_MAP,
   PROJECT_STATUS_TEXT_MAP,
@@ -12,6 +12,13 @@ export default function show({auth,
     success,
     queryParams}){
 
+    const deleteProject = (project) =>{
+        if(!window.confirm('Você quer deletar esse projeto')){
+            return;
+        }
+        router.delete(route("project.destroy", project.id))
+    }
+
     return(
 
     <AuthenticatedLayout
@@ -22,12 +29,21 @@ export default function show({auth,
             {`Project "${project.name}"`}
           </h2>
 
-          {/*<Link
-            href={route("project.edit", project.id)}
-            className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
-          >
-            Edit
-          </Link>*/}
+            <div className="">
+                <Link
+                    href={route("project.edit", project.id)}
+                    className="bg-yellow-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-yellow-600"
+                >
+                    Editar Projeto
+                </Link>
+                <Link
+                    onClick={(e) => deleteProject(project)}
+                    className="bg-red-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-red-600"
+                >
+                    Deletar Projeto
+                </Link>
+          </div>
+
         </div>
       }
     >

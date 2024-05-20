@@ -13,12 +13,17 @@ class UserResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+
+    public static $wrap = false;
+
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'password' => $this->password,
+            'password_confirmation' => $this->password_confirmation,
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
         ];
 

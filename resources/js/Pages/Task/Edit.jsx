@@ -25,7 +25,7 @@ export default function edit({auth, project}){
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("project.update", project.id));
+        post(route("task.update", task.id));
     }
 
     return(

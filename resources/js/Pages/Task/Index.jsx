@@ -91,11 +91,11 @@ export default function index({auth, tasks, queryParams = null}){
                                     <th className="px-3 py-3">Image</th>
 
                                     <TableHeading
-                                        name="project_name"
+                                        name="task_name"
                                         sort_field={queryParams.sort_field}
                                         sort_direction={queryParams.sort_direction}
                                         sortChanged={sortChanged}>
-                                        Project Name
+                                        Task Name
                                     </TableHeading>
 
                                     <TableHeading
@@ -211,7 +211,9 @@ export default function index({auth, tasks, queryParams = null}){
                                                 </td>
                                             <td className="px-3 py-2">{task.created_at}</td>
                                             <td className="px-3 py-2 text-nowrap">{task.due_date}</td>
+                                            {/*
                                             <td className="px-3 py-2 ">{task.createdBy.name}</td>
+                                            */}
 
                                             <td className="px-3 py-2 text-right">
 

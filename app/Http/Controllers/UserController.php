@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
+use illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -15,6 +17,25 @@ class UserController extends Controller
     public function index()
     {
         //
+        $query = User::query();
+
+        $sortField = request("sort_field", 'created_at');
+        $sortDirection = request("sort_direction", "desc");
+
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request("status")) {
+            $query->where("status", request("status"));
+        }
+
+        $users = $query->orderBy($sortField, $sortDirection)
+            ->paginate(10);
+
+        return inertia("User/Index", [
+            "users" => UserResource::collection($users),
+            'queryParams' => request()->query() ?: null,
+        ]);
     }
 
     /**
@@ -23,6 +44,8 @@ class UserController extends Controller
     public function create()
     {
         //
+        return inertia('User/Create', [
+        ]);
     }
 
     /**
@@ -30,7 +53,16 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        // Obtém os dados da requisição
+        $data = $request->validated();
+        /**@var $image UploadedFile */
+        $data['created_by'] = Auth::id();
+        $data['updated_by'] = Auth::id();
+
+        User::create($data);
+
+        return to_route('user.index')
+        ->with('success', 'User was created');
     }
 
     /**
@@ -39,6 +71,9 @@ class UserController extends Controller
     public function show(User $user)
     {
         //
+        return inertia('User/Show', [
+            'user' => new UserResource($user)
+        ]);
     }
 
     /**
@@ -47,6 +82,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //
+        return inertia('User/Edit', [
+            'user' => new UserResource($user),    // Converte o projeto para um recurso antes de passá-lo para a view
+        ]);
     }
 
     /**
@@ -63,5 +101,9 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+        $name = $user->name;
+
+        $user->delete();
+        return to_route('user.index')->with('success', "Usuario \"$name\" foi deletado");
     }
 }
