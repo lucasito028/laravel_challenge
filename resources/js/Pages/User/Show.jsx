@@ -28,7 +28,9 @@ export default function show({auth,
     >
       <Head title={`User "${user.name}"`} />
 
-        <pre className="font-bold text-lg mt-1">{JSON.stringify(user, undefined, 2)} </pre>
+        {/** <pre className="font-bold text-lg mt-1">{JSON.stringify(user, undefined, 2)} </pre>
+         *
+        */}
 
         <div className="py-12">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">

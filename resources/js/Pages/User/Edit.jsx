@@ -16,8 +16,8 @@ export default function edit({auth, user}){
         useForm({
         name: user.name || "",
         email: user.email || "",
-        password: user.password || "",
-        password_confirmation: user.password_confirmation || "",
+        password: "",
+        password_confirmation: "",
         _method: 'PUT'
     });
 

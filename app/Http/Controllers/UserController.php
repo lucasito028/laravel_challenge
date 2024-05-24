@@ -56,13 +56,12 @@ class UserController extends Controller
         // Obtém os dados da requisição
         $data = $request->validated();
         /**@var $image UploadedFile */
-        $data['created_by'] = Auth::id();
-        $data['updated_by'] = Auth::id();
+        $data['password'] = bcrypt($data['password']);
 
         User::create($data);
 
         return to_route('user.index')
-        ->with('success', 'User was created');
+        ->with('success', 'Usuario foi criado');
     }
 
     /**
@@ -93,6 +92,19 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         //
+        $data = $request->validated();
+        $data['email_verifield_at'] = time();
+        $password = $data['password'] ?? null;
+        if($password){
+            $data['password'] = bcrypt($password);
+        }else{
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        return to_route('user.index')
+        ->with('success', 'Usuario foi Alterado com sucesso');
     }
 
     /**

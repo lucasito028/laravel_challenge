@@ -228,9 +228,9 @@ export default function index({auth, projects, queryParams = null, success}){
                                                 </td>
                                             <td className="px-3 py-2">{project.created_at}</td>
                                             <td className="px-3 py-2 text-nowrap">{project.due_date}</td>
-                                            {/*
+
                                             <td className="px-3 py-2 ">{project.createdBy.name}</td>
-                                            */}
+
 
                                             <td className="px-3 py-2 text-right">
 

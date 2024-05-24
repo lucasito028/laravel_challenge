@@ -3,29 +3,32 @@ import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
 import TextAreaInput from "@/Components/TextAreaInput";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import SelectInput from '@/Components/SelectInput';
 
-export default function edit({auth, projects, task, users}){
+export default function create({auth, projects, users}){
 
     const {data,
         setData,
         post,
-        errors,
-        reset} =
-        useForm({
-        image: project.image_path ||"",
-        name: project.name || "",
-        status: project.status || "",
-        description: project.description || "",
-        due_date: project.due_date || "",
-        _method: 'PUT'
+        errors} = useForm({
+        image: "",
+        name: "",
+        status: "",
+        description: "",
+        due_date: "",
     });
+
+    /*
+    const handleImageChange = (e) => {
+        setData("image", e.target.files[0]); // Atualiza o estado com o arquivo de imagem selecionado
+    };
+    */
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("task.update", task.id));
+        post(route("task.store"));
     }
 
     return(
@@ -36,17 +39,18 @@ export default function edit({auth, projects, task, users}){
 
                     <h2 className="font-semibold text-xl text-gray-800
                     dark:text-gray-200 leading-tight">
-                    Editar Projeto
+                    Cadastrar Projeto
                     </h2>
 
                 </div>
             }>
+        {/** <pre className="font-bold text-lg mt-1">{JSON.stringify(projects undefined, 2)} </pre>
+         *
+        */}
+            <pre className="font-bold text-lg mt-1">{JSON.stringify(projects, undefined, 2)} </pre>
+            <pre className="font-bold text-lg mt-1">{JSON.stringify(users, undefined, 2)} </pre>
 
-            <Head title="Editar Projeto" />
-
-            {/*
-            <pre className="font-bold text-lg mt-1">{JSON.stringify(task, undefined, 2)} </pre>
-            */}
+            <Head title="Cadastro de Projeto" />
 
             <div className="py-12">
 
@@ -64,7 +68,7 @@ export default function edit({auth, projects, task, users}){
 
                                 <div>
                                     <img
-                                        src={data.image}
+                                        src={data.image ? URL.createObjectURL(data.image) : ''}
                                         alt=""
                                         className="w-full h-64 object-cover"
                                     />
@@ -99,7 +103,6 @@ export default function edit({auth, projects, task, users}){
                                     id="project_image_path"
                                     type="file"
                                     name="image"
-                                    value= {data.image_path}
                                     className="mt-1 block w-full"
                                     onChange={(e) => setData("image", e.target.files[0])}
                                     />
@@ -175,16 +178,15 @@ export default function edit({auth, projects, task, users}){
                                     id="project_status"
                                     className="mt-1 block w-full"
                                     name="status"
-                                    value={data.status}
                                     onChange={(e) => setData("status", e.target.value)}
                                     >
                                         <option value="">Select Status</option>
                                         <option value="pending">Pending</option>
-                                        <option value="in_progress">In progress</option>
-                                        <option value="completed">Completed</option>
+                                        <option value="pending">In progress</option>
+                                        <option value="pending">Completed</option>
                                     </SelectInput>
 
-                                    <InputError message={errors.status} className='mt-2'/>
+                                    <InputError message={errors.due_date} className='mt-2'/>
 
                                 </div>
 
@@ -197,10 +199,10 @@ export default function edit({auth, projects, task, users}){
                                     Voltar
                                     </Link>
 
-                                    <button className="bg-blue-500 py-1 px-3 text-white
-                                    rounded shadow transition-all hover:bg-blue-600
+                                    <button className="bg-emerald-500 py-1 px-3 text-white
+                                    rounded shadow transition-all hover:bg-emerald-600
                                     mr-2 text-sm">
-                                    Editar Projeto
+                                    Cadastrar Projeto
                                     </button>
 
                                 </div>
@@ -214,7 +216,6 @@ export default function edit({auth, projects, task, users}){
                 </div>
 
             </div>
-
         </AuthenticatedLayout>
     );
 }

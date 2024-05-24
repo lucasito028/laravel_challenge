@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Http\Resources\ProjectResource;
+use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
+use illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use App\Models\Project;
 
 class TaskController extends Controller
 {
@@ -43,6 +50,15 @@ class TaskController extends Controller
     public function create()
     {
         //
+        $projects = Project::query()
+        ->orderBy('name', 'asc')->get();
+        $users = User::query()
+        ->orderBy('name', 'asc')->get();
+
+        return inertia('Task/Create', [
+            'projects' => ProjectResource::collection($projects),
+            'users' => UserResource::collection($users)
+        ]);
     }
 
     /**
@@ -51,6 +67,19 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         //
+        $data = $request->validated();
+        $image = $data['image'] ?? null;
+        $data['created_by'] = Auth::id();
+        $data['updated_by'] = Auth::id();
+
+        if($image){
+            $data['image_path'] = $image->store('task/'. Str::random(), 'public');
+        }
+
+        Task::create($data);
+
+        return to_route('task.index')
+        ->with('sucess', "Tarefa cadastrada");
     }
 
     /**
@@ -69,6 +98,16 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         //
+        $projects = Project::query()
+        ->orderBy('name', 'asc')->get();
+        $users = User::query()
+        ->orderBy('name', 'asc')->get();
+
+        return inertia('Task/Show', [
+            'task' => new TaskResource($task),
+            'projects' => ProjectResource::collection($projects),
+            'users' => UserResource::collection($users)
+        ]);
     }
 
     /**
@@ -77,6 +116,21 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         //
+        $data = $request->validated();
+        $image = $data['image'] ?? null;
+        $data['updated_by'] = Auth::id();
+
+        if($image){
+            if($task->image_path){
+                Storage::disk('public')
+                ->deleteDirectory(dirname($task->image_path));
+            }
+            $data['image_path'] = $image->store('task/'. Str::random(), 'public');
+        }
+        $task->update();
+
+        return to_route('task.index')
+        ->with('sucess', "Tarefa {$data['id']} - {$data['name']} : Atualizada");
     }
 
     /**
@@ -85,5 +139,16 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         //
+        $id = $task->id;
+        $name = $task->name;
+
+        if($task->image_path){
+            Storage::disk('public')
+            ->deleteDirectory(dirname($task->image_path));
+        }
+
+        $task->delete();
+        return to_route('taks.index')
+        ->with('sucess', "Tarefa{$id}: {$name} Deletada com Sucesso");
     }
 }

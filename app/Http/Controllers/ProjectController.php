@@ -145,7 +145,7 @@ class ProjectController extends Controller
         $project->update($data);
 
         return to_route('project.index')
-        ->with('success', 'Projeto foi Alterado com Sucesso');;
+        ->with('success', 'Projeto foi Alterado com Sucesso');
     }
 
     /**
