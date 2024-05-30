@@ -14,11 +14,14 @@ export default function edit({auth, projects, task, users}){
         errors,
         reset} =
         useForm({
-        image: project.image_path ||"",
-        name: project.name || "",
-        status: project.status || "",
-        description: project.description || "",
-        due_date: project.due_date || "",
+        image: task.image_path ||"",
+        name: task.name || "",
+        status: task.status || "",
+        description: task.description || "",
+        project_id: task.project_id || "",
+        priority: task.priority || "",
+        due_date: task.due_date || "",
+        assigned_user_id: task.assigned_user_id || "",
         _method: 'PUT'
     });
 
@@ -72,25 +75,6 @@ export default function edit({auth, projects, task, users}){
 
                                 <div className="mt-4">
 
-                                    {/**
-                                     *
-                                    <InputLabel
-                                    htmlFor="project_image_path"
-                                    value="Project Image"/>
-
-                                    <TextInput
-                                    id="project_image_path"
-                                    type="file"
-                                    name="image"
-                                    value={data.image}
-                                    className="mt-1 block w-full"
-                                    onChange={(e) => setData("image", e.target.files[0])}
-                                    />
-
-                                    <InputError message={errors.image} className='mt-2'/>
-
-                                    */}
-
                                     <InputLabel
                                     htmlFor="project_image_path"
                                     value="Project Image"
@@ -99,11 +83,58 @@ export default function edit({auth, projects, task, users}){
                                     id="project_image_path"
                                     type="file"
                                     name="image"
-                                    value= {data.image_path}
+                                    value={data.image_path}
                                     className="mt-1 block w-full"
                                     onChange={(e) => setData("image", e.target.files[0])}
                                     />
+
                                     <InputError message={errors.image} className="mt-2" />
+
+                                </div>
+
+                                <div className="mt-4">
+
+                                    <InputLabel htmlFor="task_project_id" value="Project"/>
+
+                                    <SelectInput
+                                    name="project_id"
+                                    value= {data.project_id}
+                                    className="mt-1 block w-full"
+                                    onChange={(e)=> setData("project_id", e.target.value)}>
+
+                                        <option value="">Selecionar o Projeto</option>
+                                        {projects.data.map((project)=>(
+                                            <option value={project.id} key={project.id}>
+                                                {project.name}
+                                            </option>
+                                            ))}
+
+                                    </SelectInput>
+
+                                    <InputError message={errors.project_id} className="mt-2" />
+
+                                </div>
+
+                                <div className="mt-4">
+
+                                    <InputLabel htmlFor="task_user_id" value="Usuarios"/>
+
+                                    <SelectInput
+                                    name="user_id"
+                                    value= {data.assigned_user_id}
+                                    className="mt-1 block w-full"
+                                    onChange={(e)=> setData("assigned_user_id", e.target.value)}>
+
+                                        <option value="">Selecionar Usuario</option>
+                                        {users.data.map((user)=>(
+                                            <option value={user.id} key={user.id}>
+                                                {user.name}
+                                            </option>
+                                            ))}
+
+                                    </SelectInput>
+
+                                    <InputError message={errors.project_id} className="mt-2" />
 
                                 </div>
 

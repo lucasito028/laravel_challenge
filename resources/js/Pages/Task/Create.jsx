@@ -39,18 +39,18 @@ export default function create({auth, projects, users}){
 
                     <h2 className="font-semibold text-xl text-gray-800
                     dark:text-gray-200 leading-tight">
-                    Cadastrar Projeto
+                    Cadastrar Tarefas
                     </h2>
 
                 </div>
             }>
-        {/** <pre className="font-bold text-lg mt-1">{JSON.stringify(projects undefined, 2)} </pre>
-         *
-        */}
+
+            {/*
             <pre className="font-bold text-lg mt-1">{JSON.stringify(projects, undefined, 2)} </pre>
             <pre className="font-bold text-lg mt-1">{JSON.stringify(users, undefined, 2)} </pre>
+            */}
 
-            <Head title="Cadastro de Projeto" />
+            <Head title="Cadastro de Tarefas" />
 
             <div className="py-12">
 
@@ -76,48 +76,72 @@ export default function create({auth, projects, users}){
 
                                 <div className="mt-4">
 
-                                    {/**
-                                     *
-                                    <InputLabel
-                                    htmlFor="project_image_path"
-                                    value="Project Image"/>
+                                    <InputLabel htmlFor="task_project_id" value="Project"/>
+
+                                    <SelectInput
+                                    name="project_id"
+                                    className="mt-1 block w-full"
+                                    onChange={(e)=> setData("project_id", e.target.value)}>
+
+                                        <option value="">Selecionar o Projeto</option>
+                                        {projects.data.map((project)=>(
+                                            <option value={project.id} key={project.id}>
+                                                {project.name}
+                                            </option>
+                                            ))}
+
+                                    </SelectInput>
+
+                                    <InputError message={errors.project_id} className="mt-2" />
+
+                                </div>
+
+                                <div className="mt-4">
+
+                                    <InputLabel htmlFor="task_user_id" value="Usuarios"/>
+
+                                    <SelectInput
+                                    name="user_id"
+                                    className="mt-1 block w-full"
+                                    onChange={(e)=> setData("assigned_user_id", e.target.value)}>
+
+                                        <option value="">Selecionar Usuario</option>
+                                        {users.data.map((user)=>(
+                                            <option value={user.id} key={user.id}>
+                                                {user.name}
+                                            </option>
+                                            ))}
+
+                                    </SelectInput>
+
+                                    <InputError message={errors.project_id} className="mt-2" />
+
+                                </div>
+
+                                <div className="mt-4">
+
+                                    <InputLabel htmlFor="task_image_path" value="Tasks"/>
 
                                     <TextInput
-                                    id="project_image_path"
-                                    type="file"
-                                    name="image"
-                                    value={data.image}
-                                    className="mt-1 block w-full"
-                                    onChange={(e) => setData("image", e.target.files[0])}
+                                        id="task_image_path"
+                                        type="file"
+                                        name="image"
+                                        className="mt-1 block w-full"
+                                        onChange={(e) => setData("image", e.target.files[0])}
                                     />
 
-                                    <InputError message={errors.image} className='mt-2'/>
-
-                                    */}
-
-                                    <InputLabel
-                                    htmlFor="project_image_path"
-                                    value="Project Image"
-                                    />
-                                    <TextInput
-                                    id="project_image_path"
-                                    type="file"
-                                    name="image"
-                                    className="mt-1 block w-full"
-                                    onChange={(e) => setData("image", e.target.files[0])}
-                                    />
-                                    <InputError message={errors.image} className="mt-2" />
+                                    <InputError message={errors.task} className="mt-2" />
 
                                 </div>
 
                                 <div className="mt-4">
 
                                     <InputLabel
-                                    htmlFor="project_name"
-                                    value="Project Name"/>
+                                    htmlFor="task_name"
+                                    value="Nome da Tarefa"/>
 
                                     <TextInput
-                                    id="project_name"
+                                    id="task_name"
                                     type="text"
                                     name="name"
                                     value={data.name}
@@ -133,11 +157,11 @@ export default function create({auth, projects, users}){
                                 <div className="mt-4">
 
                                     <InputLabel
-                                    htmlFor="project_description"
-                                    value="Project Description"/>
+                                    htmlFor="task_description"
+                                    value="Descrição da Tarefa"/>
 
                                     <TextAreaInput
-                                    id="project_description"
+                                    id="task_description"
                                     type="text"
                                     name="description"
                                     value={data.description}
@@ -182,17 +206,39 @@ export default function create({auth, projects, users}){
                                     >
                                         <option value="">Select Status</option>
                                         <option value="pending">Pending</option>
-                                        <option value="pending">In progress</option>
-                                        <option value="pending">Completed</option>
+                                        <option value="in_progress">In progress</option>
+                                        <option value="completed">Completed</option>
                                     </SelectInput>
 
-                                    <InputError message={errors.due_date} className='mt-2'/>
+                                    <InputError message={errors.status} className='mt-2'/>
+
+                                </div>
+
+                                <div className="mt-4">
+
+                                    <InputLabel
+                                    htmlFor="project_priority "
+                                    value="Task Status"/>
+
+                                    <SelectInput
+                                    id="project_priority "
+                                    className="mt-1 block w-full"
+                                    name="priority "
+                                    onChange={(e) => setData("priority", e.target.value)}
+                                    >
+                                        <option value="">Selecionar Prioridade</option>
+                                        <option value="low">Facil</option>
+                                        <option value="medium">Médio</option>
+                                        <option value="high">Dificil</option>
+                                    </SelectInput>
+
+                                    <InputError message={errors.priority} className='mt-2'/>
 
                                 </div>
 
                                 <div className="mt-4 text-right">
 
-                                    <Link href={route("project.index")}
+                                    <Link href={route("task.index")}
                                     className="bg-gray-100 py-1 px-3 text-gray-700
                                     rounded shadow transition-all hover:bg-gray-200
                                     mr-2 text-sm">
@@ -202,7 +248,7 @@ export default function create({auth, projects, users}){
                                     <button className="bg-emerald-500 py-1 px-3 text-white
                                     rounded shadow transition-all hover:bg-emerald-600
                                     mr-2 text-sm">
-                                    Cadastrar Projeto
+                                    Cadastrar Tarefa
                                     </button>
 
                                 </div>

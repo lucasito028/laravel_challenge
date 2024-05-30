@@ -47,6 +47,22 @@ export default function index({auth, tasks, queryParams = null}){
         router.get(route("task.index"), queryParams);
     };
 
+    /*
+    const deleteProject = (project) =>{
+
+        if(!window.confirm('Você quer deletar esse projeto')){
+            return;
+        }
+        router.delete(route("project.destroy", project.id))
+    }
+    */
+   const deleteTask = (task) => {
+        if(!window.confirm('Você quer deletar essa Tarefa')){
+            return
+        }
+        router.delete(route("task.destroy", task.id));
+   }
+
     return(
         <AuthenticatedLayout
         user={auth.user}
@@ -223,17 +239,15 @@ export default function index({auth, tasks, queryParams = null}){
                                                 </td>
                                             <td className="px-3 py-2">{task.created_at}</td>
                                             <td className="px-3 py-2 text-nowrap">{task.due_date}</td>
-                                            {/*
                                             <td className="px-3 py-2 ">{task.createdBy.name}</td>
-                                            */}
 
                                             <td className="px-3 py-2 text-right">
 
-                                                <Link href={route("project.edit", task.id)}
+                                                <Link href={route("task.edit", task.id)}
                                                 className="font-medium dark:text-blue-500
                                                 hover:underline mx-1">Editar</Link>
 
-                                                <Link href={route("project.destroy", task.id)}
+                                                <Link onClick={(e) => deleteTask(task)}
                                                 className="font-medium text-red-600 dark:text-red-
                                                 500 hover:underline mx-1">Excluir</Link>
 

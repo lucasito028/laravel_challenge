@@ -178,8 +178,8 @@ export default function create({auth}){
                                     >
                                         <option value="">Select Status</option>
                                         <option value="pending">Pending</option>
-                                        <option value="pending">In progress</option>
-                                        <option value="pending">Completed</option>
+                                        <option value="in_progress">In progress</option>
+                                        <option value="completed">Completed</option>
                                     </SelectInput>
 
                                     <InputError message={errors.due_date} className='mt-2'/>

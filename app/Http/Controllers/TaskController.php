@@ -103,7 +103,7 @@ class TaskController extends Controller
         $users = User::query()
         ->orderBy('name', 'asc')->get();
 
-        return inertia('Task/Show', [
+        return inertia('Task/Edit', [
             'task' => new TaskResource($task),
             'projects' => ProjectResource::collection($projects),
             'users' => UserResource::collection($users)
@@ -122,15 +122,14 @@ class TaskController extends Controller
 
         if($image){
             if($task->image_path){
-                Storage::disk('public')
-                ->deleteDirectory(dirname($task->image_path));
+                Storage::disk('public')->deleteDirectory(dirname($task->image_path));
             }
             $data['image_path'] = $image->store('task/'. Str::random(), 'public');
         }
         $task->update();
 
         return to_route('task.index')
-        ->with('sucess', "Tarefa {$data['id']} - {$data['name']} : Atualizada");
+        ->with('sucess', "Tarefa - {$data['name']} : Atualizada");
     }
 
     /**
