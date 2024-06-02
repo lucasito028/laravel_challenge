@@ -40,6 +40,7 @@ class UpdateTaskRequest extends FormRequest
             //
             'name' => ['required', 'max:255'],
             'image' => ['nullable', 'image'],
+            //'image_path' => ['nullable', 'image'],
             'description' => ['nullable', 'string'],
             'project_id' => ['required', 'exists:projects,id'],
             'assigned_user_id' => ['required', 'exists:users,id'],

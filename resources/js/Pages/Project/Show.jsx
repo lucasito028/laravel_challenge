@@ -47,9 +47,10 @@ export default function show({auth,
         </div>
       }
     >
-    {
-        <pre className="font-bold text-lg mt-1">{JSON.stringify(project, undefined, 2)} </pre>
-    }
+
+    {/*
+            <pre className="font-bold text-lg mt-1">{JSON.stringify(project, undefined, 2)} </pre>
+    */}
       <Head title={`Project "${project.name}"`} />
 
         <div className="py-12">

@@ -129,6 +129,7 @@ class ProjectController extends Controller
         $data = $request->validated();
         /**@var $image UploadedFile */
         $image = $data['image'] ?? null;
+        //$image = $data['image_path'] ?? null;
         $data['updated_by'] = Auth::id();
 
         if ($image) {

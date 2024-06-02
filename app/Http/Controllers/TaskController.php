@@ -116,20 +116,22 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         //
-        $data = $request->validated();
-        $image = $data['image'] ?? null;
-        $data['updated_by'] = Auth::id();
+    $data = $request->validated();
+    $image = $data['image'] ?? null;
+    //$image = $data['image_path'] ?? null;
+    $data['updated_by'] = Auth::id();
 
-        if($image){
-            if($task->image_path){
-                Storage::disk('public')->deleteDirectory(dirname($task->image_path));
-            }
-            $data['image_path'] = $image->store('task/'. Str::random(), 'public');
+    if($image){
+        if($task->image_path){
+            Storage::disk('public')->deleteDirectory(dirname($task->image_path));
         }
-        $task->update();
+        $data['image_path'] = $image->store('task/' . Str::random(), 'public');
+    }
 
-        return to_route('task.index')
-        ->with('sucess', "Tarefa - {$data['name']} : Atualizada");
+    $task->update($data); // Atualiza a tarefa com os dados recebidos
+
+    return to_route('task.index')
+        ->with('success', "Tarefa - {$task->name} : Atualizada");
     }
 
     /**

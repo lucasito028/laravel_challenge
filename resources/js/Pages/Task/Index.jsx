@@ -47,15 +47,6 @@ export default function index({auth, tasks, queryParams = null}){
         router.get(route("task.index"), queryParams);
     };
 
-    /*
-    const deleteProject = (project) =>{
-
-        if(!window.confirm('Você quer deletar esse projeto')){
-            return;
-        }
-        router.delete(route("project.destroy", project.id))
-    }
-    */
    const deleteTask = (task) => {
         if(!window.confirm('Você quer deletar essa Tarefa')){
             return
@@ -123,7 +114,7 @@ export default function index({auth, tasks, queryParams = null}){
                                         sort_field={queryParams.sort_field}
                                         sort_direction={queryParams.sort_direction}
                                         sortChanged={sortChanged}>
-                                        Task Name
+                                        Project Name
                                     </TableHeading>
 
                                     <TableHeading
