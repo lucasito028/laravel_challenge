@@ -65,7 +65,7 @@ export default function show({auth,
                                 </div>
                                 <div>
                                     <label className="font-bold text-lg">Test 2</label>
-                                    <p className="mt-1">{user.password}</p>
+                                    <p className="mt-1">{user.password_confirmation}</p>
                                 </div>
                             </div>
                         </div>

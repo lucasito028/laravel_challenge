@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\ProjectResource;
 
 class TaskResource extends JsonResource
 {
